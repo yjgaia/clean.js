@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>테슷흐!</title>
+	</head>
+	<body>
+		<script src="../../../clean.js"></script>
+		<script>
+			//TODO:
+			var arr = [1, 2, 3, 4, 4, 4, 4, 4, 5, 5, 6];
+			console.log(clean.is.array(arr));
+
+			//first
+			console.log(clean.array.first(arr));
+			console.log(clean.array.first(arr, 4));
+
+			//last
+			console.log(clean.array.last(arr));
+			console.log(clean.array.last(arr, 3));
+
+			// range
+			console.log(clean.array.range(10));
+			console.log(clean.array.range(1, 10));
+			console.log(clean.array.range(0, 30, 5));
+			console.log(clean.array.range(-10, 10));
+
+			//unique
+			console.log(clean.array.unique(arr));
+			//intersection
+			console.log(clean.array.intersection(arr, [1, 2, 3, 7, 8, 9], [1, 2, 10, 11], [1, 2, 3, 11, 13, 14]));
+			//intersection
+			console.log(clean.array.difference(arr, [1, 2, 3, 7, 9], [1, 2, 10, 11], [1, 11, 13]));
+
+			//remove
+			console.log(clean.array.remove(arr));
+			console.log(clean.array.remove(arr, 1, 2));
+
+			//union
+			console.log(clean.array.union(arr, [1, 2, 11, 22], [1, 2, 3, 8, 9]));
+
+			console.log(clean.array.map([1, 2, 3], function(num) {
+				return num * 3;
+			}));
+
+			console.log(clean.array.map({one: 1, two: 2, three: 3}, function(num) {
+				return num * 3;
+			}));
+
+			console.log(clean.array.reject([1, 2, 3, 4, 5, 6], function(num) {
+				return num % 2 === 0;
+			}));
+
+			console.log(clean.array.invoke([[5, 1, 7], [3, 2, 1]], 'sort'));
+
+			console.log(clean.array.object(['1', '2', '3'], [30, 40, 50]));
+
+			console.log(clean.array.count(arr, 4));
+
+			console.log(clean.array.compact([1, 2, 0, false, NaN, '', '222']));
+		</script>
+	</body>
+</html>

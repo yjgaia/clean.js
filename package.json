@@ -1,0 +1,16 @@
+{
+	"name": "clean.js",
+	"version": "0.0.2",
+	"description": "누구나 참여하고 누구나 읽기 쉬운 소스코드를 작성한다! 오픈소스 JavaScript 라이브러리, clean.js!",
+	"main": "clean.js",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/cleanjs/clean.js.git"
+	},
+	"keywords": ["javascript", "lib"],
+	"author": "hanul",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/cleanjs/clean.js/issues"
+	}
+}

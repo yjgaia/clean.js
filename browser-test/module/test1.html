@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Validator Test</title>
+	<style>
+		.resultBox{
+			width : 100px;
+			height : 100px;
+		}
+		.greenLight{
+			background-color: #9AEE9A;
+		}
+		.redLight{
+			background-color: #EE9A9A;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		<div>
+			<input type="text" name="clean" placeholder="clean을 입력하세요."/>
+		</div>
+		<div>
+			<label for="name">이름</label><input id="name" type="text" name="name" placeholder="이름은 비어있으면 안 되요!">
+		</div>
+		<div>
+			<label for="age">나이</label><input id="age" type="text" name="age" placeholder="나이는 숫자만!">
+		</div>
+		<div>
+			<button type="button" id="validButton">검증!</button>
+			<div class="resultBox redLight" id="testResult"></div>
+		</div>
+	</div>
+	<script src="../../clean.js"></script>
+	<script src="../../source/valid/Validator.js"></script>
+	<script>
+		document.querySelector("#validButton").addEventListener("click", function(){
+			var validator = new clean.valid.Validator(),
+				$testResult = document.querySelector("#testResult");
+
+			validator
+					.equals(document.querySelector("input[name=clean]").value, "clean", "clean을 입력하세요.")
+					.isNotEmpty(document.querySelector("#name").value, "이름은 비어있으면 안 됩니다. 입력하세요.")
+					.isNotEmpty(document.querySelector("#age").value, "나이도 비어있음 안 됩니다.")
+					.isOnlyNumber(document.querySelector("#age").value, "나이는 숫자만 넣어요 쫌.")
+					.run();
+
+			if(validator.isPass()){
+				$testResult.className = "resultBox greenLight";
+				$testResult.innerHTML = "그린라이트가 켜졌습니다!";
+			}else{
+				$testResult.className = "resultBox redLight";
+			}
+		});
+	</script>
+</body>
+</html>

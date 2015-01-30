@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>예제? 예스잼!</title>
+	</head>
+	<body>
+		<h1>자네 나와 예제 문서를 만들지 않겠나?</h1>
+		<p>일단 콘솔창을 열어보시게.</p>
+		<script src="../clean.js"></script>
+		<script>
+		console.log('자넨 뼈속까지 자바스크립트를 사랑하는군. 보통은 콘솔창을 안열어보지. 환영하네 망설이지말고 참여하시게.');
+		// DATE 관련
+		//yyyy-mm-dd 로 뽑아오기.
+		console.log(clean.date.getTimeStamp());
+		//현재가 언제인지
+		console.log(clean.date.now());
+
+		//STRING 관련
+		var targetString = "암~ 쏘핫 난 너무 멋져~";
+		var searchString = "너무";
+
+		var result = clean.string.contains(targetString, searchString);
+		console.log(result);
+
+		//escapeHtml
+		var tag = "<a href='http://naver.com'>링크 태그예유~</a>";
+		var result = clean.string.escapeHtml(tag);
+		console.log('바꾸기 전 =>' + tag);
+		console.log('바꾼 후 =>' + result);
+
+		//random
+		var randomString = clean.string.random(15);
+		console.log('랜덤 문자열 => ' + randomString);
+		
+		//randomColor
+		var randomColorString = clean.string.randomColor();
+		console.log('랜덤 색상 문자열 => ' + randomColorString);
+
+		//removeAll
+		var targetString = '아싸라비야 콜롬비야 뿌악뿌악';
+		var removeString = '뿌악뿌악';
+		var result = clean.string.removeAll(targetString, removeString);
+		console.log('원래 문자 => ' + targetString);
+		console.log('삭제할 문자 => ' + removeString);
+		console.log('삭제후 결과 => ' + result);
+
+		//replaceAll
+		var targetString = "가나 초콜릿 가나다 가가가나나나";
+		var searchString = "나";
+		var replaceString = "바";
+		var result = clean.string.replaceAll(targetString, searchString, replaceString);
+		console.log('변경할 문자열 => ' + targetString);
+		console.log('대상 문자 => ' + searchString);
+		console.log('바꿀 문자 => ' + replaceString);
+		console.log('결과 => ' + result);
+
+		//stripTag
+		var tag = "<a href='http://naver.com'>링크 태그예유~</a>";
+		var result = clean.string.stripTag(tag);
+		console.log('삭제 전 =>' + tag);
+		console.log('삭제 후 =>' + result);
+
+		//trim
+		var targetString = "    아싸라비야 콜롬비야 삐약삐약     ";
+		var result = clean.string.trim(targetString);
+		console.log('변경할 문자열 => ' + targetString);
+		console.log('변경후 문자열 => ' + result);
+
+		//hyphenOnPhoneNum
+		//현재 문자열값으로 넘겨줘야함. 간혹 int 값으로 보내는 경우가 있어서 이에대한 예외처리 준비중.
+		var targetNumber = "01012341234";
+		var result = clean.string.hyphenOnPhoneNum(targetNumber);
+		console.log('하이픈 넣기전 => ' + targetNumber)
+		console.log('하이픈 넣은후 => ' + result)
+
+		//테스트 해보아야 할것들 미리 정검.
+		/* 주어진 단어가 영문 또는 숫자인지 */
+		function is_alpha_num( str )
+		{
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 64 && str.charCodeAt(i) < 91) || (str.charCodeAt(i) >= 96 && str.charCodeAt(i) <= 123) || (str.charCodeAt(i) > 47 && str.charCodeAt(i) < 58) ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 영문/한글/숫자인지 */
+		function is_alpha_han_num( str )
+		{
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 64 && str.charCodeAt(i) < 91) || (str.charCodeAt(i) >= 96 && str.charCodeAt(i) <= 123) || (str.charCodeAt(i) > 47 && str.charCodeAt(i) < 58) || ((str.charCodeAt(i) > 0x3130 && str.charCodeAt(i) < 0x318F) || (str.charCodeAt(i) >= 0xAC00 && str.charCodeAt(i) <= 0xD7A3)) ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 영문/한글인지 */
+		function is_han_alpha( str )
+		{
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 64 && str.charCodeAt(i) < 91) || (str.charCodeAt(i) >= 96 && str.charCodeAt(i) <= 123) || ((str.charCodeAt(i) > 0x3130 && str.charCodeAt(i) < 0x318F) || (str.charCodeAt(i) >= 0xAC00 && str.charCodeAt(i) <= 0xD7A3)) ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 한글인지 */
+		function is_han( str )
+		{
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 0x3130 && str.charCodeAt(i) < 0x318F) || (str.charCodeAt(i) >= 0xAC00 && str.charCodeAt(i) <= 0xD7A3)))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 숫자인지 */
+		function is_num( num )
+		{
+			for(i=0; i<num.length; i++)
+			{
+				if(!(num.charCodeAt(i) > 47 && num.charCodeAt(i) < 58))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 전체 영문인지 */
+		function is_alpha( str )
+		{
+
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 64 && str.charCodeAt(i) < 91) || (str.charCodeAt(i) >= 96 && str.charCodeAt(i) <= 123)))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+
+		/* 주어진 단어가 한글 또는 숫자인지 */
+		function is_han_num( str )
+		{
+			for(i=0; i<str.length; i++)
+			{
+				if(!((str.charCodeAt(i) > 0x3130 && str.charCodeAt(i) < 0x318F) || (str.charCodeAt(i) >= 0xAC00 && str.charCodeAt(i) <= 0xD7A3) || (str.charCodeAt(i) > 47 && str.charCodeAt(i) < 58) ))
+				{
+					return false;
+				}
+			}
+
+			return true;
+		}
+		</script>
+	</body>
+</html>
+

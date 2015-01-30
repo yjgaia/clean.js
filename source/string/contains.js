@@ -4,6 +4,5 @@ clean.string.contains = function(target, search) {
 	//REQUIRED: search: 확인할 문자열입니다!
 
 	// search를 찾아가지고 인덱스를 확인합니다!
-	return target.indexOf(search) >= 0;
+	return target.indexOf(search) != -1;
 };
-

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>테슷흐!</title>
+	</head>
+	<body>
+
+		<div id="test">
+			this is test.
+		</div>
+
+		<script src="../../../clean.js"></script>
+		<script>
+			var el = clean.dom.find('#test');
+			clean.dom.attr(el, {
+				style : 'color: red;'
+			});
+			console.log(clean.dom.attr(el, 'style'));
+		</script>
+	</body>
+</html>
