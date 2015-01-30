@@ -69,6 +69,7 @@ https://github.com/orgs/studyjs/teams/clean-js-committers
 - 2014-02-26: devyrlee님 로고 제작해주심
 - 2014-02-26: http://cleanjs.org 오픈
 - 2014-02-27: npm package로 등록 (https://www.npmjs.org/package/clean.js)
+- 2015-01-30: 한 커미터가 저장소를 삭제, 다시 복구. 해당 커미터는 권한 제외 (다시는 이런 일 없길 ㅜㅜ)
 
 향후 로드맵
 ---
