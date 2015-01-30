@@ -32,6 +32,7 @@ clean.ajax.get = function(url, method, callback) {
 			} else {
 				alert('There was a problem with the request.');
 			}
+			httpRequest.onreadystatechange = function() {};
 		}
 	};
 
