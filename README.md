@@ -1,4 +1,4 @@
-![ScreenShot](https://raw.github.com/cleanjs/clean.js/master/logo.png)
+![ScreenShot](https://raw.github.com/studyjs/clean.js/master/logo.png)
 ========
 clean.js는 언제나 열려있습니다. 아무때나, 편하게 오셔서 커밋한번 하고 가세요~!
 
@@ -29,7 +29,7 @@ node.js
 이것만은 지켜주세요!
 ----
 - 더글라스 크락포드 옹의 자바스크립트 핵심 가이드를 따릅시다!<br>
-![ScreenShot](https://raw.github.com/cleanjs/clean.js/master/DouglasCrockford.jpg)
+![ScreenShot](https://raw.github.com/studyjs/clean.js/master/DouglasCrockford.jpg)
 - 부담없이 막 올려주세요! 주석이라도 좋으니 1일 1커밋을 해봅시다!
 - 주석은 백만줄이라도 좋으니 팍팍 달아주세요. 한글로 상세하게 설명할수록 좋아요.
 - 내가 만족하는 코드가 아닌 다른 사람이 '보기 좋은' 코드를 작성해주세요!
@@ -87,7 +87,7 @@ node.js쪽 지원을 더 강화할지 등 커미터 여러분들과 상의해서
 라이센스
 ----
 MIT 라이센스를 따라요.
-- https://raw.github.com/cleanjs/clean.js/master/LICENSE
+- https://raw.github.com/studyjs/clean.js/master/LICENSE
 
 올ㅋ
 --
