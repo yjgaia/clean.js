@@ -31,6 +31,7 @@ clean;
 	},
 	cookie : {},
 	ajax : {},
+	websocket : {},
 
 	// 모듈
 	module : {},
@@ -43,6 +44,93 @@ clean;
 if ( typeof exports !== 'undefined') {
 	module.exports = clean;
 }
+
+// ajax 요청을 쏴쏴~~
+clean.ajax.get = function(url, method, callback) {
+	//REQUIRED: url
+	//REQUIRED: method
+	//REQUIRED: callback
+
+	var
+	// http request
+	httpRequest;
+
+	if (window.XMLHttpRequest) {// Mozilla, Safari, ...
+		httpRequest = new XMLHttpRequest();
+	} else if (window.ActiveXObject) {// IE
+		try {
+			httpRequest = new ActiveXObject('Msxml2.XMLHTTP');
+		} catch (e) {
+			try {
+				httpRequest = new ActiveXObject('Microsoft.XMLHTTP');
+			} catch (e) {
+			}
+		}
+	}
+
+	if (!httpRequest) {
+		alert('Giving up :( Cannot create an XMLHTTP instance');
+		return false;
+	}
+	httpRequest.onreadystatechange = function() {
+		if (httpRequest.readyState === 4) {
+			if (httpRequest.status === 200) {
+				callback(httpRequest.responseText);
+			} else {
+				alert('There was a problem with the request.');
+			}
+			httpRequest.onreadystatechange = function() {};
+		}
+	};
+
+	method = method.toUpperCase();
+
+	switch(method){
+	case 'GET':
+		httpRequest.open(method, url);
+		httpRequest.send();
+		break;
+	case 'POST':
+	case 'PUT':
+	case 'DELETE':
+		httpRequest.open(method, url.substring(0, url.indexOf('?')));
+		httpRequest.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+		httpRequest.send(url.substring(url.indexOf('?') + 1));
+		break;
+	}
+};
+
+// delete 방식으로 ajax 요청을 쏴쏴~~
+clean.ajax.del = function(url, callback) {
+	//REQUIRED: url
+	//REQUIRED: callback
+
+	clean.ajax.call(url, 'DELETE', callback);
+};
+
+// get 방식으로 ajax 요청을 쏴쏴~~
+clean.ajax.get = function(url, callback) {
+	//REQUIRED: url
+	//REQUIRED: callback
+
+	clean.ajax.call(url, 'GET', callback);
+};
+
+// post 방식으로 ajax 요청을 쏴쏴~~
+clean.ajax.post = function(url, callback) {
+	//REQUIRED: url
+	//REQUIRED: callback
+
+	clean.ajax.call(url, 'POST', callback);
+};
+
+// put 방식으로 ajax 요청을 쏴쏴~~
+clean.ajax.put = function(url, callback) {
+	//REQUIRED: url
+	//REQUIRED: callback
+
+	clean.ajax.call(url, 'PUT', callback);
+};
 
 // NaN, false, undefined, empty value를 제외한 값을 반환한다
 clean.array.compact = function(array) {
@@ -535,6 +623,14 @@ clean.cookie.value = function(offset) {
 	return unescape(document.cookie.substring(offset, endstr));
 };
 
+// 지금이 언제냐?
+clean.date.now = function() {
+
+	// 지금은 지금이다!
+	// 롸잇! 나우!
+	return new Date();
+};
+
 // 날자를 읽기 편하게 보여줘용(YYYY-mm-dd HH:ii:ss)
 //COMMENT: 형식도 바꿀 수 있게 하면 어떨까요?!
 clean.date.timestamp = function() {
@@ -569,14 +665,6 @@ clean.date.timestamp = function() {
 	leadingZeros(d.getSeconds(), 2);
 
 	return result;
-};
-
-// 지금이 언제냐?
-clean.date.now = function() {
-
-	// 지금은 지금이다!
-	// 롸잇! 나우!
-	return new Date();
 };
 
 //TODO:
@@ -634,6 +722,60 @@ clean.dom.attrs = function(el) {
 	return attrs;
 };
 
+/**
+ * 지정된 태그의 요소를 생성.
+ * @param tag       필수, 태그 이름.
+ * @param options   옵션, 태그 생성 후 지정할 속성들. 예제 참조.
+ * @return {HTMLElement} 생성된 DOM 리턴.
+ *
+ * attr  은 사용자 지정 요소나 DOM 지정불가한 요소를 정의하기 위한 속성. (예: data-custom)
+ * style 은 스타일을 JSON 으로 정의 (JS 표준 스타일이름과 동일함. 예:borderRightColor)
+ * init  은 DOM 생성 후 이벤트 처리 등 각종 유연한 작업이 필요할 때 콜백으로 정의 가능.
+ * 예제)
+ * clean.dom.create('button',{
+        attr:{type:'button'},
+        name:'mybutton',value:'myvalue',
+        style:{border:'1px solid red'},
+        init:function(){
+            this.onclick=function(){
+                alert('my button clicked.');
+            };
+        }
+    })
+ * @see https://gist.github.com/composite/4507324
+ */
+clean.dom.create = function(tag, options){
+    //REQUIRED: tag
+    //OPTIONAL: options
+
+    options = options || {};
+    return (function(dom){
+        //없으면 null 그대로
+        if(!dom) return dom;
+        //속성명 정의
+        var STYLE='style',ATTR='attr',TYPE='type',INIT='init',FUNC;
+        for(var n in options){
+            //스타일 적용
+            if(n==STYLE){
+                for(var m in options[STYLE]) dom[STYLE][m]=options[s][m];
+            //비공식속성 적용
+            }else if(n==ATTR){
+                for(var m in options[ATTR]) dom.setAttribute(m,options[ATTR][m]);
+            //init 콜백. 속성 모두 정의 후 발생
+            }else if(n==INIT&&typeof(options[n])==='function'){
+                FUNC = options[n];
+            //type 속성은 브라우저간 적용 문제로 비공식 적용
+            }else if(n==TYPE){
+                dom.setAttribute(n,options[n]);
+            //기타 속성은 DOM 다이렉트 적용
+            }else dom[n]=options[n];
+        }
+        //콜백 실행
+        if(FUNC) FUNC.call(dom,options);
+        //이후 생성된 DOM 리턴
+        return dom;
+    })(document.createElement(tag));
+};
 // 문서 높이 구하기인데... 마땅히 어디다가 둘때가;;;
 //COMMENT: 여기 두심 됩니당!! ㅋㅋ 이름은 좀 변경 했어용!!
 clean.dom.docHeight = function() {
@@ -679,14 +821,23 @@ clean.dom.findAll = function(selectors) {
 
 clean.dom.style = function(el,data){
 	
+	//datd가 object면 	
 	if(clean.is.object(data) === true) {
 		
+		//styleSet인 data에서 한개씩 뽑아내서 stlyeOne에 대입하여
+		for( var styleOne in data){
+			
+			///el의 styleOne에 매칭되는 styleProperty에 넘어온 data의 styleOne에 해당하는 value를 대입힌다.
+			el.style[styleOne]=data[styleOne];
+		}
 	}
-	
-	
+	//datd가 string이면
 	else if(clean.is.string(data) === true) {
 		
-		return el.getAttribute(data);
+		//el의 style이름이 data와 매칭 되는것을 반환 
+		//ex. el의 style 중  display = 'inline'이 있을때 
+		//data가 'display'면 inline반환
+		return getComputedStyle(el,null).getPropertyValue(data);
 	}
 
 };
@@ -694,6 +845,65 @@ clean.dom.style = function(el,data){
 // element의 style들을 객체로 가져온다!!
 // 예) clean.dom.styles(el); -> { fontSize : 16 }
 // TODO: 
+
+
+clean.dom.styles = function(el,param){
+	var jsonObj;
+	var stringifyObj;
+	
+	//해당 element에 적용되어있는  css에 더하여 기본적으로 적용되어있는 모든 css를 가져온다.
+	if(param == 'all'){
+		jsonObj = getComputedStyle(el,'');
+	}
+	
+	//기본적으로 적용되어있는 css 외에 사용자가 property를 지정한 css 만 가져온다.
+	/*
+	 * 구현중..
+	 * document.styleSheets 에는 현제 페이지에 로딩되어있는 stylesheet의 카운트가 저장되고 이는 lengh로 호출 가능하다.
+	 * ex 1 start
+	 *      <style>
+	 * 		 #test{
+	 * 		 	 display:inline;
+	 * 		 }
+	 * 		</style>
+	 * 		<link rel="stylesheet" href="./css/test.css">
+	 * 		
+	 * 		##주의 ##
+	 *      cleanjs가 stylesheet의 수를 count해야해서 모든 css 아래에 배치해야 적용이 된다.
+	 * 		<script src="../clean.js"></script>
+	 * 		alert(document.styleSheets.length); // 2
+	 * ex 1 end 
+	 * 
+	 * document.styleSheets[0]에는 저음 style태그의 내용들이, document.styleSheets[1]에는 link된 stylesheet의 내용이 들어있다.
+	 * 
+	 * 그리고 var cssContents= document.styleSheets[0].cssRules를 호출하면 
+	 * 
+	 * 첫번재 로딩된 (직접삽입된 <style>태그의 내용들) 스타일이 저장되어있다.
+	 * alert(cssContents.legnth);//3 (#test, #test1, #test2)
+	 * 
+	 * style 의 각 각 이름과, style은
+	 * alert(cssContents[0].selectorText);//#test
+	 * alert(cssContents[0].style.cssText);//display:inline;
+	 * 
+	 * 이렇게 호출한다. 
+	 * 여기서부터 해결해야함.
+	 *  
+	 * 
+	 */
+	else if(param == 'applied'){
+		jsonObj = {flag:'adding..'};
+	}
+	
+	else{
+		//잘못된 명령어라면 아무것도 undefined를 입력한다.
+		return jsonObj;
+	}
+	
+	return jsonObj;
+
+};
+
+
 //TODO:
 //TODO:
 
@@ -769,6 +979,7 @@ clean.helper.age = function(yyyymmdd) {
 };
 
 clean.helper.base64Encode = function(input) {
+	//REQUIRED: input
 	
 	 input = escape(input);
      var output = "";
@@ -802,7 +1013,7 @@ clean.helper.base64Encode = function(input) {
      } while (i < input.length);
 
      return output;
-}
+};
 
 // 몇초를 기다릴까나?
 clean.helper.delay = function(seconds, func) {
@@ -890,6 +1101,28 @@ clean.info.device = (function(){
 		ios : ios
 	}
 })();
+/**
+ * 숫자를 읽기쉼게 3자리마다 쉼표 표시.
+ * @param number 쉼표 추가할 숫자
+ * @returns {string} 쉼표 추가된 숫자 문자열 리턴.
+ *
+ * 예제) clean.integer.format(35782340534); // 35,782,340,534
+ * @see https://gist.github.com/composite/4343031
+ */
+clean.integer.format = function(number) {
+    //REQUIRED number
+    
+    //숫자 아니거나 1000 이하는 변환 필요없음.
+    if(isNaN(+number)||+number<1e3) return number;
+    //파라미터 준비
+    number=String(number);var result='';
+    //숫자 반전시켜 저장
+    for(var i=number.length-1;i>=0;i--) result+=number.charAt(i);number='';
+    //3자리마다 쉼표 적용
+    for(var i=result.length-1;i>=0;i--) number+=result.charAt(i)+(!(i%3)?',':'');
+    //끝 쉼표 정리 후 리턴
+    return number.replace(/,$/,'');
+};
 // 랜덤한 정수 반환~!
 clean.integer.random = function(min, max) {
 	//OPTIONAL: min: 최소값
@@ -1540,6 +1773,23 @@ clean.string.between = function(target, start, end) {
 	// 자릅니다!
 	return target.substring(startPos, endPos);
 }
+/** 
+ * 바이트 사이즈를 구합니다요..
+ * 맥에서 보니까 한글이 다 깨져 있네요 --;; 수정
+ * @author Axsusia
+ * @param str 문자열 반환입니다.
+ */
+clean.string.byteSize = function(str){
+	/**
+	 * size : 문자열의 현재 싸이즈
+	 * c : char
+	 * i : 변수
+	 * for for문 돌면서 size 에 add  >> add >> 끝
+	 */
+	var size, c, i;
+	for(size=i=0;c=str.charCodeAt(i++);size+=c>>11?2:c>>7?2:1);
+	return size;
+}
 // 문자열에서 해당문자가 포함되었는지 확인합니다
 clean.string.contains = function(target, search) {
 	//REQUIRED: target: 대상문자열입니다!
@@ -1737,24 +1987,29 @@ clean.string.lTrim = (function(){
 	}
 })();
 
-// 문자열의 오른쪽을 trim 합니다.역쉬 트림 수정하신분 세세함이 돋보입니다!
-clean.string.rTrim = (function(){
-	var regExTrim;
-	// rTrim 을 지원하면
-	if( !!String.prototype.rTrim ){
-		return function( target ){
-			//REQUIRED: target: 바꿀 대상의 문자열입니다!
-			return target.rTrim();
-		};
-	// rTrim 을 지원하지 않으면
-	}else{
-		regExTrim = /\s+$/;
-		return function( target ){
-			//REQUIRED: target: 바꿀 대상의 문자열입니다!
-			return target.replace( regExTrim, '' );
-		};
-	}
-})();
+/**
+ * 문자열의 왼쪽을 채워주는 함수
+ * @param string 대상 문자열
+ * @param char   채울 문자열
+ * @param loop   원하는 문자열 길이
+ * @return {string} 채워진 문자열 리턴.
+ *
+ * 예제) pad1('12','0',4); //0012
+ * @see https://gist.github.com/composite/8396308
+ */
+clean.string.padLeft = function(string, char, loop) {
+    //REQUIRED string
+    //OPTIONAL char
+    //OPTIONAL loop
+
+    //옵션 파라미터의 기본값 적용
+    string = String(string);char = char || ' ';loop = isNaN(+loop) ? string.length : +loop;
+    //왼쪽에 끼워넣고
+    for(var i=0,len=loop-string.length;i<len;i++)
+        string = String(char) + string;
+    //리턴.
+    return string;
+};
 // 랜덤 문자열을 반환하는 함수입니다.
 clean.string.random = function(size) {
 	//REQUIRED: size: 올매나 긴 문자열을 만들건지 ㅋ
@@ -1806,6 +2061,24 @@ clean.string.reverse = function(target) {
 	return target.split('').reverse().join('');
 }
 
+// 문자열의 오른쪽을 trim 합니다.역쉬 트림 수정하신분 세세함이 돋보입니다!
+clean.string.rTrim = (function(){
+	var regExTrim;
+	// rTrim 을 지원하면
+	if( !!String.prototype.rTrim ){
+		return function( target ){
+			//REQUIRED: target: 바꿀 대상의 문자열입니다!
+			return target.rTrim();
+		};
+	// rTrim 을 지원하지 않으면
+	}else{
+		regExTrim = /\s+$/;
+		return function( target ){
+			//REQUIRED: target: 바꿀 대상의 문자열입니다!
+			return target.replace( regExTrim, '' );
+		};
+	}
+})();
 // 문자열에서 HTML 태그를 삭제합니다.
 clean.string.stripTag = (function(){
 	var regExTag;
