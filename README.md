@@ -28,8 +28,6 @@ node.js
 
 이것만은 지켜주세요!
 ----
-- 더글라스 크락포드 옹의 자바스크립트 핵심 가이드를 따릅시다!<br>
-![ScreenShot](https://raw.github.com/studyjs/clean.js/master/DouglasCrockford.jpg)
 - 부담없이 막 올려주세요! 주석이라도 좋으니 1일 1커밋을 해봅시다!
 - 주석은 백만줄이라도 좋으니 팍팍 달아주세요. 한글로 상세하게 설명할수록 좋아요.
 - 내가 만족하는 코드가 아닌 다른 사람이 '보기 좋은' 코드를 작성해주세요!
@@ -57,20 +55,6 @@ QUnit
 ---
 - clean.js는 ECMAScript 5 스펙에 맞추어 개발됩니다.  (ES5는 IE 9 이상부터 지원합니다.)
 
-커미터
----
-원래 한분한분 아이디 작성해 놓았는데 넘 길어지는것 같아 숫자로 대신합니다!<br>
-현재 총 42분(>=)의 커미터가 계십니다! (아래 경로에서 확인 가능!)
-https://github.com/orgs/studyjs/teams/clean-js-committers
-
-타임라인
----
-- 2014-02-25: 프로젝트 생성
-- 2014-02-26: devyrlee님 로고 제작해주심
-- 2014-02-26: http://cleanjs.org 오픈
-- 2014-02-27: npm package로 등록 (https://www.npmjs.org/package/clean.js)
-- 2015-01-30: 한 커미터분이 저장소를 삭제하여, 다시 복구하였습니다. 해당 커미터는 권한을 제외하였습니다. (다시는 이런 일이 없길 ㅜㅜ)
-
 향후 로드맵
 ---
 - <b>1차 로드맵</b><br>
@@ -88,9 +72,4 @@ node.js쪽 지원을 더 강화할지 등 커미터 여러분들과 상의해서
 
 라이센스
 ----
-MIT 라이센스를 따라요.
-- https://raw.github.com/studyjs/clean.js/master/LICENSE
-
-올ㅋ
---
-- 이 문서도 수정 가능해요!!
+[MIT](LICENSE)
