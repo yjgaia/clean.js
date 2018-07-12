@@ -1,12 +1,10 @@
 // ajax 요청을 쏴쏴~~
-clean.ajax.get = function(url, method, callback) {
+clean.ajax.get = (url, method, callback) => {
 	//REQUIRED: url
 	//REQUIRED: method
 	//REQUIRED: callback
 
-	var
-	// http request
-	httpRequest;
+	let httpRequest;
 
 	if (window.XMLHttpRequest) {// Mozilla, Safari, ...
 		httpRequest = new XMLHttpRequest();
@@ -25,14 +23,14 @@ clean.ajax.get = function(url, method, callback) {
 		alert('Giving up :( Cannot create an XMLHTTP instance');
 		return false;
 	}
-	httpRequest.onreadystatechange = function() {
+	httpRequest.onreadystatechange = () => {
 		if (httpRequest.readyState === 4) {
 			if (httpRequest.status === 200) {
 				callback(httpRequest.responseText);
 			} else {
 				alert('There was a problem with the request.');
 			}
-			httpRequest.onreadystatechange = function() {};
+			httpRequest.onreadystatechange = () => {};
 		}
 	};
 

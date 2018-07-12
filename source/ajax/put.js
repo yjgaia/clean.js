@@ -1,5 +1,5 @@
 // put 방식으로 ajax 요청을 쏴쏴~~
-clean.ajax.put = function(url, callback) {
+clean.ajax.put = (url, callback) => {
 	//REQUIRED: url
 	//REQUIRED: callback
 
